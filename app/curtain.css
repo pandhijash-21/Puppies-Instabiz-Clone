@@ -1,0 +1,287 @@
+/* Page-load / route curtain — kept outside globals.css (Tailwind was dropping these rules). */
+
+.tp-curtain {
+  z-index: 95;
+  pointer-events: none;
+  visibility: hidden;
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+.tp-curtain[data-state="intro"],
+.tp-curtain[data-state="covering"],
+.tp-curtain[data-state="covered"],
+.tp-curtain[data-state="snap"],
+.tp-curtain[data-state="lifting"] {
+  visibility: visible;
+}
+
+.tp-curtain[data-state="covering"],
+.tp-curtain[data-state="covered"],
+.tp-curtain[data-state="snap"] {
+  pointer-events: auto;
+  cursor: progress;
+}
+
+.tp-curtain__blanket {
+  background-color: #fbe3b4;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 46px,
+      rgba(42, 23, 14, 0.07) 46px,
+      rgba(42, 23, 14, 0.07) 48px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 46px,
+      rgba(42, 23, 14, 0.07) 46px,
+      rgba(42, 23, 14, 0.07) 48px
+    ),
+    radial-gradient(circle at 50% 46%, #fffdf8 0%, transparent 60%);
+  will-change: transform;
+  place-items: center;
+  display: grid;
+  position: absolute;
+  inset: 0;
+  transform: translateY(calc(100% + 44px));
+}
+
+.tp-curtain__edge {
+  display: block;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 40px;
+}
+
+.tp-curtain__edge--top {
+  top: -39px;
+}
+
+.tp-curtain__edge--bottom {
+  bottom: -39px;
+  transform: scaleY(-1);
+}
+
+.tp-curtain[data-state="intro"] {
+  animation: tp-curtain-rest 0s linear 1.04s forwards;
+}
+
+.tp-curtain[data-state="intro"] .tp-curtain__blanket {
+  transform: translate(0, 0);
+  animation: tp-curtain-lift 0.48s cubic-bezier(0.65, 0, 0.3, 1) 0.56s forwards;
+}
+
+.tp-curtain[data-state="covering"] .tp-curtain__blanket {
+  animation: tp-curtain-cover 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.tp-curtain[data-state="covered"] .tp-curtain__blanket,
+.tp-curtain[data-state="snap"] .tp-curtain__blanket {
+  transform: translate(0, 0);
+}
+
+.tp-curtain[data-state="lifting"] .tp-curtain__blanket {
+  animation: tp-curtain-lift 0.46s cubic-bezier(0.65, 0, 0.3, 1) both;
+}
+
+@keyframes tp-curtain-cover {
+  from {
+    transform: translateY(calc(100% + 44px));
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes tp-curtain-lift {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(calc(-100% - 44px));
+  }
+}
+
+@keyframes tp-curtain-rest {
+  to {
+    visibility: hidden;
+  }
+}
+
+.tp-curtain__stage {
+  width: min(28rem, 78vw);
+  height: clamp(10rem, 26vw, 13rem);
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.tp-curtain__runner {
+  --runner-w: clamp(6.5rem, 15vw, 9rem);
+  width: var(--runner-w);
+  position: absolute;
+  bottom: 2.4rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tp-curtain__runner .tp-runner {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+.tp-curtain__prints {
+  width: min(16rem, 55vw);
+  height: 2.2rem;
+  position: absolute;
+  left: 50%;
+  bottom: 2.1rem;
+  transform: translateX(calc(-50% - 4.5rem));
+}
+
+.tp-curtain__print {
+  width: clamp(1rem, 2.4vw, 1.45rem);
+  fill: #c2622b;
+  opacity: 0;
+  position: absolute;
+}
+
+.tp-curtain__note {
+  white-space: nowrap;
+  color: #8e3f15;
+  font-size: clamp(1.05rem, 2.4vw, 1.45rem);
+  position: absolute;
+  bottom: 0.15rem;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.tp-curtain:not([data-state="idle"]) .tp-curtain__runner {
+  animation: tp-runner-x 1.15s cubic-bezier(0.32, 0.1, 0.4, 1) both;
+}
+
+.tp-curtain:not([data-state="idle"]) .tp-curtain__print {
+  animation: tp-print-step 1s ease-out both;
+}
+
+@keyframes tp-runner-x {
+  from {
+    transform: translateX(calc(-50% - 42vw));
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes tp-print-step {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  14% {
+    opacity: 0.7;
+    transform: scale(1.08);
+  }
+  26% {
+    transform: scale(1);
+  }
+  70% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.tp-runner .tp-runner__leg,
+.tp-runner .tp-runner__tail,
+.tp-runner .tp-runner__ear {
+  transform-box: view-box;
+}
+
+.tp-curtain:not([data-state="idle"]) .tp-runner__leg--fn,
+.tp-curtain:not([data-state="idle"]) .tp-runner__leg--bf {
+  animation: tp-runner-leg-a 0.32s ease-in-out infinite alternate;
+}
+
+.tp-curtain:not([data-state="idle"]) .tp-runner__leg--ff,
+.tp-curtain:not([data-state="idle"]) .tp-runner__leg--bn {
+  animation: tp-runner-leg-b 0.32s ease-in-out infinite alternate;
+}
+
+.tp-curtain:not([data-state="idle"]) .tp-runner__body {
+  animation: tp-runner-bob 0.16s ease-in-out infinite alternate;
+}
+
+.tp-curtain:not([data-state="idle"]) .tp-runner__tail {
+  animation: tp-runner-wag 0.22s ease-in-out infinite alternate;
+}
+
+.tp-curtain:not([data-state="idle"]) .tp-runner__ear {
+  animation: tp-runner-ear 0.16s ease-in-out infinite alternate;
+}
+
+@keyframes tp-runner-leg-a {
+  from {
+    transform: rotate(24deg);
+  }
+  to {
+    transform: rotate(-22deg);
+  }
+}
+
+@keyframes tp-runner-leg-b {
+  from {
+    transform: rotate(-22deg);
+  }
+  to {
+    transform: rotate(24deg);
+  }
+}
+
+@keyframes tp-runner-bob {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes tp-runner-wag {
+  from {
+    transform: rotate(-16deg);
+  }
+  to {
+    transform: rotate(14deg);
+  }
+}
+
+@keyframes tp-runner-ear {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(8deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tp-curtain {
+    display: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html[data-curtain] {
+    overflow-y: hidden;
+  }
+}
