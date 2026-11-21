@@ -700,9 +700,9 @@ export function HomeScrollBuddy() {
   return (
     <div
       ref={rootRef}
-      className="pointer-events-none fixed left-0 top-0 z-[70]"
+      className="tp-scroll-buddy pointer-events-none fixed left-0 top-0 z-[70]"
       style={{
-        width: "clamp(8.5rem, 11vw, 10.5rem)",
+        width: "clamp(6.75rem, 18vw, 10.5rem)",
         opacity: 0,
         willChange: "transform, opacity",
         transformOrigin: "50% 92%",

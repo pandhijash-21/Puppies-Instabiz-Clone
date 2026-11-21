@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import { sealAdminLoginRequest } from "@/lib/crypto/admin-login-client";
 import { hasSupabaseEnv } from "@/lib/config";
 import { Button } from "@/components/ui/Button";
 
@@ -28,12 +28,34 @@ export function LoginForm() {
     }
 
     try {
-      const supabase = createClient();
-      const { error: signError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+      const challengeRes = await fetch("/api/admin/login/challenge", {
+        method: "GET",
+        cache: "no-store",
       });
-      if (signError) throw signError;
+      if (!challengeRes.ok) {
+        throw new Error("Unable to start secure login");
+      }
+      const challenge = (await challengeRes.json()) as {
+        challengeId: string;
+        publicKey: string;
+      };
+
+      const sealed = await sealAdminLoginRequest(
+        challenge.publicKey,
+        challenge.challengeId,
+        { email, password },
+      );
+
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(sealed),
+      });
+      const json = (await res.json()) as { ok?: boolean; error?: string };
+      if (!res.ok) {
+        throw new Error(json.error || "Invalid credentials");
+      }
+
       router.push(params.get("next") || "/admin/dashboard");
       router.refresh();
     } catch (err) {
@@ -63,6 +85,7 @@ export function LoginForm() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required={supabaseReady}
+        autoComplete="username"
         className="mt-1 w-full rounded-xl border border-cocoa/15 px-3 py-2"
       />
       <label className="mt-4 block text-sm font-semibold" htmlFor="password">
@@ -74,6 +97,7 @@ export function LoginForm() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required={supabaseReady}
+        autoComplete="current-password"
         className="mt-1 w-full rounded-xl border border-cocoa/15 px-3 py-2"
       />
       {error && <p className="mt-3 text-sm text-red-700">{error}</p>}

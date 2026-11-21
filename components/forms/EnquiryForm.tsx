@@ -19,7 +19,7 @@ function Stamp() {
 }
 
 const dashInput =
-  "mx-1 inline-block min-w-[7rem] max-w-full border-0 border-b-2 border-dashed border-cocoa/35 bg-transparent px-1 py-0.5 text-cocoa outline-none transition placeholder:text-cocoa-soft/55 focus:border-toffee";
+  "mx-1 inline-block w-full min-w-0 max-w-full border-0 border-b-2 border-dashed border-cocoa/35 bg-transparent px-1 py-0.5 text-cocoa outline-none transition placeholder:text-cocoa-soft/55 focus:border-toffee sm:w-auto sm:min-w-[7rem]";
 
 export function EnquiryForm({
   mode,

@@ -44,10 +44,8 @@
 
 html {
   scroll-behavior: auto;
-}
-
-html {
   background: var(--background);
+  overflow-x: clip;
 }
 
 body {
@@ -56,6 +54,11 @@ body {
   font-family: var(--font-sans);
   font-size: 17px;
   line-height: 1.6;
+  overflow-x: clip;
+}
+
+body.tp-nav-open {
+  overflow: hidden;
 }
 
 ::selection {
@@ -3261,4 +3264,93 @@ html.faq-room {
   opacity: 1;
   transform: rotateX(0deg);
   transition-delay: 80ms;
+}
+
+/* —— Public responsive pass (375 / 768) —— */
+@media (max-width: 767px) {
+  .gutter {
+    width: min(110rem, calc(100% - 1.25rem));
+  }
+
+  .tp-hero {
+    min-height: auto;
+  }
+
+  .tp-hero__stage {
+    --tw: clamp(11rem, 58vw, 16rem);
+    --quilt-h: clamp(3.75rem, 11vh, 5.5rem);
+    min-height: clamp(12rem, 42vh, 18rem);
+  }
+
+  .tp-hero__teddy {
+    width: clamp(5.25rem, 28vw, 7.25rem);
+    bottom: calc(var(--quilt-h) + 1.1rem);
+  }
+
+  .tp-scroll-buddy {
+    width: clamp(5.75rem, 22vw, 8rem) !important;
+  }
+
+  .tp-phone {
+    width: min(100%, 20rem);
+    rotate: 0deg;
+  }
+
+  .tp-phone__screen {
+    height: clamp(18rem, 52vh, 26rem);
+    min-height: 18rem;
+  }
+
+  .tp-chat__step {
+    min-height: 16rem;
+  }
+
+  .tp-chat__step:last-child {
+    min-height: 18rem;
+  }
+
+  .tp-meet__title {
+    font-size: clamp(1.55rem, 7vw, 2.1rem);
+  }
+
+  .tp-meet__sub {
+    font-size: 0.9rem;
+  }
+
+  .tp-meet__track {
+    gap: clamp(3.25rem, 10vw, 5rem);
+    padding-inline: clamp(8.5rem, 42vw, 12rem) 8vw;
+  }
+
+  .tp-meet__teddy {
+    width: clamp(7.5rem, 34vw, 10rem);
+  }
+
+  .tp-paths {
+    padding-block: clamp(3rem, 8vh, 5rem) clamp(2.5rem, 7vh, 4rem);
+  }
+
+  .tp-letterform,
+  .tp-letter {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 479px) {
+  body {
+    font-size: 16px;
+  }
+
+  .site-header__bar .font-plush {
+    font-size: 1.15rem;
+  }
+
+  #mobile-nav a {
+    font-size: clamp(1.55rem, 8vw, 2.1rem);
+  }
+
+  .tp-quilt__edge {
+    top: -28px;
+    height: 30px;
+  }
 }

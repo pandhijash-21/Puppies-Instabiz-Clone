@@ -41,9 +41,17 @@ export default async function HomePage() {
             Meet your new best friend in our Dubai showroom, or order a rare miniature breed from
             trusted breeders worldwide.
           </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <ButtonLink href="/puppies">View available puppies</ButtonLink>
-            <ButtonLink href={whatsappHref()} variant="whatsapp" target="_blank" rel="noopener noreferrer">
+          <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+            <ButtonLink href="/puppies" className="w-full justify-center sm:w-auto">
+              View available puppies
+            </ButtonLink>
+            <ButtonLink
+              href={whatsappHref()}
+              variant="whatsapp"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full justify-center sm:w-auto"
+            >
               Enquire on WhatsApp
             </ButtonLink>
           </div>
