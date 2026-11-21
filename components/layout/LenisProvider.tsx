@@ -12,7 +12,21 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
       lenisRef.current?.lenis?.raf(timestamp);
     }
     frame.update(update, true);
-    return () => cancelFrame(update);
+
+    const sync = () => {
+      const lenis = lenisRef.current?.lenis;
+      if (lenis) {
+        (window as Window & { __tpLenis?: typeof lenis }).__tpLenis = lenis;
+      }
+    };
+    sync();
+    const id = window.setInterval(sync, 500);
+
+    return () => {
+      cancelFrame(update);
+      window.clearInterval(id);
+      delete (window as Window & { __tpLenis?: unknown }).__tpLenis;
+    };
   }, []);
 
   return (

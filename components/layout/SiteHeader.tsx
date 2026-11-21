@@ -10,21 +10,22 @@ import { siteConfig } from "@/lib/config";
 import { whatsappHref } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils/cn";
 
+/** Active-page paw under nav links — fuller pad + four toes */
 function PawMark({ className }: { className?: string }) {
   return (
     <svg
       className={className}
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
+      width="18"
+      height="16"
+      viewBox="0 0 28 24"
       fill="currentColor"
       aria-hidden
     >
-      <ellipse cx="12" cy="15.5" rx="5" ry="4.2" />
-      <circle cx="6.5" cy="9.5" r="2" />
-      <circle cx="10.5" cy="7.2" r="2.1" />
-      <circle cx="14.5" cy="7.2" r="2.1" />
-      <circle cx="18" cy="9.5" r="2" />
+      <ellipse cx="14" cy="16.2" rx="6.2" ry="5.2" />
+      <ellipse cx="5.2" cy="9.2" rx="2.55" ry="3.1" transform="rotate(-18 5.2 9.2)" />
+      <ellipse cx="10.2" cy="6.4" rx="2.7" ry="3.3" transform="rotate(-6 10.2 6.4)" />
+      <ellipse cx="17.8" cy="6.4" rx="2.7" ry="3.3" transform="rotate(6 17.8 6.4)" />
+      <ellipse cx="22.8" cy="9.2" rx="2.55" ry="3.1" transform="rotate(18 22.8 9.2)" />
     </svg>
   );
 }
@@ -39,18 +40,18 @@ export function SiteHeader() {
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 md:px-6 md:py-4">
           <Link
             href="/"
-            className="flex items-center gap-2 focus-ring rounded-full"
+            className="flex items-center gap-2.5 focus-ring rounded-full"
             aria-label={`${siteConfig.name} — home`}
           >
             <Image
-              src="/brand/logo.svg"
+              src="/brand/logo.png"
               alt=""
-              width={48}
-              height={48}
-              className="rounded-full"
+              width={52}
+              height={52}
+              className="h-[48px] w-[48px] rounded-full object-cover shadow-[0_2px_8px_rgba(42,23,14,0.18)] md:h-[52px] md:w-[52px]"
               priority
             />
-            <span className="font-plush text-xl font-extrabold leading-none text-cocoa md:text-2xl">
+            <span className="font-plush text-xl font-extrabold leading-none tracking-tight text-cocoa md:text-2xl">
               TeddyPups
             </span>
           </Link>
@@ -66,14 +67,14 @@ export function SiteHeader() {
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    "tp-nav-link relative px-3 py-2 text-[16px] text-cocoa transition hover:text-toffee-deep",
-                    active && "font-semibold",
+                    "tp-nav-link relative px-3 py-2 text-[16px] font-bold text-cocoa transition hover:text-toffee-deep",
+                    active && "font-extrabold text-toffee-deep",
                   )}
                   aria-current={active ? "page" : undefined}
                 >
                   {link.label}
                   {active && (
-                    <PawMark className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 text-toffee" />
+                    <PawMark className="tp-nav-paw absolute -bottom-1 left-1/2 -translate-x-1/2 text-toffee-deep" />
                   )}
                 </Link>
               );
@@ -85,7 +86,7 @@ export function SiteHeader() {
               href={whatsappHref()}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-whatsapp hidden text-[15.2px] sm:inline-flex"
+              className="btn btn-whatsapp hidden text-[15.2px] font-bold sm:inline-flex"
             >
               WhatsApp us
             </a>
@@ -120,7 +121,7 @@ export function SiteHeader() {
               href={whatsappHref()}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-whatsapp mt-6 w-full"
+              className="btn btn-whatsapp mt-6 w-full font-bold"
             >
               WhatsApp us
             </a>

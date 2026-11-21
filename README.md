@@ -47,9 +47,9 @@ See [`.env.example`](.env.example).
 
 | Variable | Purpose |
 |----------|---------|
-| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Public anon key (RLS enforced) |
-| `SUPABASE_SERVICE_ROLE_KEY` | Server-only seed/uploads — never expose to the browser |
+| `NEXT_PUBLIC_SUPABASE_URL` / `SUPABASE_URL` | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` / `SUPABASE_PUBLISHABLE_KEY` | Public publishable key (RLS enforced) |
+| `SUPABASE_SECRET_KEY` | Server-only seed/uploads — never expose to the browser |
 | `NEXT_PUBLIC_WHATSAPP_NUMBER` | E.164 digits for `wa.me` links |
 | `ADMIN_EMAIL` / `ADMIN_PASSWORD` | Seed admin credentials |
 
@@ -93,7 +93,7 @@ See [`.env.example`](.env.example).
 ## Deploy on Vercel
 
 1. Push the repo and import into Vercel.
-2. Add the same env vars as `.env.local` (including `SUPABASE_SERVICE_ROLE_KEY` for admin uploads).
+2. Add the same env vars as `.env.local` (including `SUPABASE_SECRET_KEY` for admin uploads).
 3. Deploy. Run the SQL migration + `npm run db:seed` against the production Supabase project once.
 
 ```bash

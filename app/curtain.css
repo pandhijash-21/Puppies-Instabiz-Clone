@@ -274,9 +274,135 @@
   }
 }
 
+/* Hide Meet hallway walker until the scroll buddy hands off */
+html[data-pup]:not([data-meet-walker="on"]) .tp-meet__teddy {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+html[data-meet-walker="on"] .tp-meet__teddy {
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+
+/* —— Page scroll buddy: same four-leg walk as the curtain runner —— */
+.tp-pup {
+  display: block;
+  width: 100%;
+  height: auto;
+  --pup-stride: 0.38s;
+  transform-origin: 50% 92%;
+}
+
+.tp-pup .tp-pup__leg,
+.tp-pup .tp-pup__tail,
+.tp-pup .tp-pup__ear {
+  transform-box: view-box;
+}
+
+.tp-pup__shadow {
+  transform-origin: 150px 230px;
+  transform-box: view-box;
+}
+
+.tp-pup[data-gait="walk"] .tp-pup__leg--fn,
+.tp-pup[data-gait="walk"] .tp-pup__leg--bf {
+  animation: tp-pup-leg-a var(--pup-stride) ease-in-out infinite alternate;
+}
+
+.tp-pup[data-gait="walk"] .tp-pup__leg--ff,
+.tp-pup[data-gait="walk"] .tp-pup__leg--bn {
+  animation: tp-pup-leg-b var(--pup-stride) ease-in-out infinite alternate;
+}
+
+/* Slightly softer swing than the curtain sprint — keeps stance readable */
+@keyframes tp-pup-leg-a {
+  from {
+    transform: rotate(18deg);
+  }
+  to {
+    transform: rotate(-16deg);
+  }
+}
+
+@keyframes tp-pup-leg-b {
+  from {
+    transform: rotate(-16deg);
+  }
+  to {
+    transform: rotate(18deg);
+  }
+}
+
+.tp-pup[data-gait="walk"] .tp-pup__body {
+  animation: tp-pup-stride-bob calc(var(--pup-stride) * 0.5) ease-in-out infinite alternate;
+}
+
+.tp-pup[data-gait="walk"] .tp-pup__tail {
+  animation: tp-runner-wag calc(var(--pup-stride) * 0.7) ease-in-out infinite alternate;
+}
+
+.tp-pup[data-gait="walk"] .tp-pup__ear {
+  animation: tp-runner-ear calc(var(--pup-stride) * 0.5) ease-in-out infinite alternate;
+}
+
+.tp-pup[data-gait="walk"] .tp-pup__shadow {
+  animation: tp-pup-shadow-pulse calc(var(--pup-stride) * 0.5) ease-in-out infinite alternate;
+}
+
+.tp-pup[data-gait="idle"] .tp-pup__body {
+  animation: tp-pup-breathe 2.4s ease-in-out infinite;
+}
+
+.tp-pup[data-gait="idle"] .tp-pup__tail {
+  animation: tp-runner-wag 1.6s ease-in-out infinite alternate;
+}
+
+.tp-pup[data-gait="sit"] .tp-pup__tail {
+  animation: tp-runner-wag 2.2s ease-in-out infinite alternate;
+}
+
+@keyframes tp-pup-stride-bob {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes tp-pup-breathe {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1.5px);
+  }
+}
+
+@keyframes tp-pup-shadow-pulse {
+  from {
+    transform: scaleX(1);
+    opacity: 0.16;
+  }
+  to {
+    transform: scaleX(0.88);
+    opacity: 0.1;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .tp-curtain {
     display: none !important;
+  }
+
+  .tp-pup[data-gait] .tp-pup__leg,
+  .tp-pup[data-gait] .tp-pup__body,
+  .tp-pup[data-gait] .tp-pup__tail,
+  .tp-pup[data-gait] .tp-pup__ear,
+  .tp-pup[data-gait] .tp-pup__shadow {
+    animation: none !important;
   }
 }
 

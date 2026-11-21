@@ -240,8 +240,8 @@ export default function HowItWorksPage() {
               src="/brand/walking-puppy.svg"
               alt=""
               width={176}
-              height={150}
-              className="drop-shadow-[0_12px_18px_rgba(42,23,14,.22)]"
+              height={141}
+              className="h-auto w-full drop-shadow-[0_12px_18px_rgba(42,23,14,.22)]"
             />
           </div>
         </section>

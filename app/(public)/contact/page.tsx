@@ -44,8 +44,8 @@ export default async function ContactPage() {
                 src="/brand/walking-puppy.svg"
                 alt=""
                 width={160}
-                height={140}
-                className="drop-shadow-[0_10px_16px_rgba(42,23,14,.18)]"
+                height={128}
+                className="h-auto w-full drop-shadow-[0_10px_16px_rgba(42,23,14,.18)]"
               />
             </div>
           </div>

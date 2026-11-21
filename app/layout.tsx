@@ -5,6 +5,8 @@ import { RouteCurtain } from "@/components/layout/RouteCurtain";
 import { siteConfig } from "@/lib/config";
 import "./globals.css";
 import "./curtain.css";
+import "./families.css";
+import "./puppies.css";
 
 const figtree = Figtree({
   variable: "--font-figtree",
@@ -33,10 +35,19 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   applicationName: siteConfig.name,
+  icons: {
+    icon: [
+      { url: "/brand/logo.png", type: "image/png", sizes: "512x512" },
+      { url: "/favicon-32.png", type: "image/png", sizes: "32x32" },
+      { url: "/favicon-16.png", type: "image/png", sizes: "16x16" },
+    ],
+    apple: [{ url: "/apple-icon.png", type: "image/png", sizes: "180x180" }],
+  },
   openGraph: {
     siteName: siteConfig.name,
     locale: "en_AE",
     type: "website",
+    images: [{ url: "/brand/logo.png", width: 512, height: 512, alt: siteConfig.name }],
   },
 };
 

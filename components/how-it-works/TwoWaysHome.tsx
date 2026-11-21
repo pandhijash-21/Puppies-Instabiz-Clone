@@ -175,8 +175,8 @@ export function TwoWaysHome() {
               src="/brand/walking-puppy.svg"
               alt=""
               width={128}
-              height={110}
-              className="drop-shadow-[0_8px_14px_rgba(42,23,14,.2)]"
+              height={102}
+              className="h-auto w-full drop-shadow-[0_8px_14px_rgba(42,23,14,.2)]"
             />
           </div>
         </div>

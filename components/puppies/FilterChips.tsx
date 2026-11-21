@@ -3,17 +3,32 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils/cn";
 
-const chips = [
-  { key: "everywhere", label: "Everywhere" },
-  { key: "imported", label: "Imported" },
-  { key: "korean", label: "Korean Teacup" },
-  { key: "maltipoo", label: "Maltipoo" },
-  { key: "pomeranian", label: "Pomeranian" },
-  { key: "poodle", label: "Poodle" },
-  { key: "cavapoo", label: "Cavapoo" },
-  { key: "shih", label: "Shih Tzu" },
-  { key: "boys", label: "Boys" },
-  { key: "girls", label: "Girls" },
+const groups = [
+  {
+    label: "where",
+    chips: [
+      { key: "everywhere", label: "Everywhere" },
+      { key: "imported", label: "Imported" },
+      { key: "korean", label: "Korean Teacup" },
+    ],
+  },
+  {
+    label: "breed",
+    chips: [
+      { key: "maltipoo", label: "Maltipoo" },
+      { key: "pomeranian", label: "Pomeranian" },
+      { key: "poodle", label: "Poodle" },
+      { key: "cavapoo", label: "Cavapoo" },
+      { key: "shih", label: "Shih Tzu" },
+    ],
+  },
+  {
+    label: "boy or girl",
+    chips: [
+      { key: "boys", label: "Boys" },
+      { key: "girls", label: "Girls" },
+    ],
+  },
 ] as const;
 
 export function FilterChips() {
@@ -29,26 +44,31 @@ export function FilterChips() {
   }
 
   return (
-    <div className="flex flex-wrap gap-2" role="group" aria-label="Filter puppies">
-      {chips.map((chip) => {
-        const pressed = active === chip.key || (chip.key === "everywhere" && !params.get("filter"));
-        return (
-          <button
-            key={chip.key}
-            type="button"
-            aria-pressed={pressed}
-            onClick={() => setFilter(chip.key)}
-            className={cn(
-              "rounded-full border px-4 py-2 text-sm font-semibold transition focus-ring",
-              pressed
-                ? "border-toffee-deep bg-toffee-deep text-milk"
-                : "border-cocoa/20 bg-white text-cocoa hover:border-toffee",
-            )}
-          >
-            {chip.label}
-          </button>
-        );
-      })}
+    <div className="sketch-filters" role="group" aria-label="Filter puppies">
+      <span className="sketch-filters__tape" aria-hidden />
+      {groups.map((group) => (
+        <div key={group.label} className="sketch-filters__row">
+          <span className="sketch-filters__label">{group.label}</span>
+          <div className="sketch-filters__chips">
+            {group.chips.map((chip) => {
+              const pressed =
+                active === chip.key ||
+                (chip.key === "everywhere" && !params.get("filter"));
+              return (
+                <button
+                  key={chip.key}
+                  type="button"
+                  aria-pressed={pressed}
+                  onClick={() => setFilter(chip.key)}
+                  className={cn("sketch-filters__chip focus-ring", pressed && "is-active")}
+                >
+                  {chip.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { FooterBasketBuddy } from "@/components/layout/FooterBasketBuddy";
 import { footerExplore } from "@/content/static";
 import { siteConfig } from "@/lib/config";
 import { whatsappHref } from "@/lib/whatsapp";
@@ -55,15 +56,7 @@ export function SiteFooter() {
           </div>
 
           <div className="order-last md:order-none md:col-span-5 md:col-start-1 md:row-start-2">
-            <div className="w-40 md:w-48">
-              <Image
-                src="/brand/walking-puppy.svg"
-                alt=""
-                width={192}
-                height={160}
-                className="drop-shadow-[0_10px_18px_rgba(0,0,0,.35)]"
-              />
-            </div>
+            <FooterBasketBuddy />
           </div>
 
           <nav
@@ -127,7 +120,7 @@ export function SiteFooter() {
 
         <div className="relative mx-auto mt-12 flex max-w-[110rem] flex-col items-start justify-between gap-4 border-t border-milk/15 px-4 py-6 text-sm text-milk/60 md:mt-16 md:flex-row md:items-center md:px-8 lg:px-12">
           <div className="flex items-center gap-2">
-            <Image src="/brand/logo.svg" alt="" width={28} height={28} className="rounded-full" />
+            <Image src="/brand/logo.png" alt="" width={32} height={32} className="rounded-full object-cover" />
             <span>
               © {new Date().getFullYear()} {siteConfig.name}
             </span>

@@ -50,8 +50,8 @@ export function FaqBoard({ faqs }: { faqs: Faq[] }) {
             src="/brand/walking-puppy.svg"
             alt=""
             width={176}
-            height={150}
-            className="mx-auto drop-shadow-[0_12px_20px_rgba(0,0,0,.28)]"
+            height={141}
+            className="mx-auto h-auto w-full drop-shadow-[0_12px_20px_rgba(0,0,0,.28)]"
           />
         </div>
 
