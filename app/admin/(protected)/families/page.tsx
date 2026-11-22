@@ -11,8 +11,11 @@ export default async function AdminFamiliesPage() {
 
   return (
     <div>
-      <h1 className="font-plush text-4xl font-extrabold">Happy families</h1>
-      <form action={upsertFamilyAction} className="mt-8 space-y-3 rounded-2xl bg-white p-6 shadow-sm">
+      <h1 className="font-plush font-extrabold">Happy families</h1>
+      <form
+        action={upsertFamilyAction}
+        className="mt-6 space-y-3 rounded-2xl bg-white p-4 shadow-sm sm:mt-8 sm:p-6"
+      >
         <h2 className="font-plush text-xl font-bold">Add story</h2>
         <input
           name="title"
@@ -98,12 +101,18 @@ export default async function AdminFamiliesPage() {
 
             <form
               action={uploadFamilyImageAction}
-              className="mt-4 flex flex-wrap items-center gap-3"
+              className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center"
               encType="multipart/form-data"
             >
               <input type="hidden" name="family_id" value={family.id} />
-              <input type="file" name="file" accept="image/*" required />
-              <Button type="submit" variant="ghost">
+              <input
+                type="file"
+                name="file"
+                accept="image/*"
+                required
+                className="block w-full min-w-0 max-w-full sm:w-auto"
+              />
+              <Button type="submit" variant="ghost" className="w-full sm:w-auto">
                 Upload photo
               </Button>
             </form>

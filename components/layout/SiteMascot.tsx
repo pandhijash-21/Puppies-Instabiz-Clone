@@ -15,9 +15,10 @@ export function SiteMascot() {
   if (
     pathname.startsWith("/admin") ||
     pathname === "/" ||
-    pathname.startsWith("/happy-families")
+    pathname.startsWith("/happy-families") ||
+    pathname.startsWith("/puppies/")
   ) {
-    // Home / families page already have dedicated walkers in-flow
+    // Home / families / puppy storybook already have dedicated art in-flow
     return null;
   }
 

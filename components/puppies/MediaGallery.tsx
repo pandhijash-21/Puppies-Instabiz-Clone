@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { PuppyImage } from "@/lib/types";
+import { cn } from "@/lib/utils/cn";
 
 export function MediaGallery({
   media,
@@ -16,7 +16,7 @@ export function MediaGallery({
   const [index, setIndex] = useState(0);
   if (!items.length) {
     return (
-      <div className="flex aspect-[4/5] items-center justify-center rounded-[2rem] bg-honey-soft/50 text-cocoa-soft">
+      <div className="tp-storypage flex aspect-[4/5] items-center justify-center text-cocoa-soft md:aspect-[5/6]">
         No media yet
       </div>
     );
@@ -27,79 +27,85 @@ export function MediaGallery({
 
   return (
     <div>
-      <div className="relative overflow-hidden rounded-[2rem] bg-honey-soft/40 shadow-[0_20px_50px_rgba(42,23,14,0.15)]">
-        <div className="relative aspect-[4/5]">
-          {current.media_type === "video" ? (
-            <video
-              key={current.id}
+      <div className="tp-storypage relative aspect-[4/5] md:aspect-[5/6]">
+        {current.media_type === "video" ? (
+          <video
+            key={current.id}
+            src={current.url}
+            controls
+            className="absolute inset-0 size-full object-cover"
+            aria-label={`${name}, video ${index + 1} of ${items.length}`}
+          />
+        ) : (
+          <button
+            type="button"
+            className="absolute inset-0 block size-full"
+            aria-label={`Open ${name}, photo ${index + 1} of ${items.length} full screen`}
+            onClick={() => window.open(current.url, "_blank")}
+          >
+            <Image
               src={current.url}
-              controls
-              className="h-full w-full object-cover"
-              aria-label={`${name}, video ${index + 1} of ${items.length}`}
+              alt={`${name}, photo ${index + 1} of ${items.length}`}
+              fill
+              className="object-cover"
+              sizes="(min-width: 1024px) 55vw, 92vw"
+              priority
             />
-          ) : (
-            <button
-              type="button"
-              className="relative h-full w-full"
-              aria-label={`Open ${name}, photo ${index + 1} of ${items.length} full screen`}
-              onClick={() => window.open(current.url, "_blank")}
-            >
-              <Image
-                src={current.url}
-                alt={`${name}, photo ${index + 1} of ${items.length}`}
-                fill
-                className="object-cover"
-                sizes="(max-width:1024px) 100vw, 50vw"
-                priority
-              />
-            </button>
-          )}
-        </div>
+          </button>
+        )}
         {items.length > 1 && (
-          <>
+          <div className="absolute inset-x-4 bottom-4 flex justify-between">
             <button
               type="button"
               onClick={prev}
               aria-label="Previous photo"
-              className="absolute bottom-4 left-4 rounded-full bg-milk/90 p-2 shadow focus-ring"
+              className="grid size-12 place-items-center rounded-full border-2 border-cocoa bg-milk/95 text-xl font-bold focus-ring"
             >
-              <ChevronLeft />
+              ‹
             </button>
+            <span className="self-center rounded-full bg-cocoa/80 px-3 py-1 text-sm font-semibold text-milk">
+              {index + 1} / {items.length}
+            </span>
             <button
               type="button"
               onClick={next}
               aria-label="Next photo"
-              className="absolute bottom-4 right-4 rounded-full bg-milk/90 p-2 shadow focus-ring"
+              className="grid size-12 place-items-center rounded-full border-2 border-cocoa bg-milk/95 text-xl font-bold focus-ring"
             >
-              <ChevronRight />
+              ›
             </button>
-            <span className="absolute bottom-5 left-1/2 -translate-x-1/2 rounded-full bg-cocoa/70 px-3 py-1 text-sm text-milk">
-              {index + 1} / {items.length}
-            </span>
-          </>
+          </div>
         )}
       </div>
+
       {items.length > 1 && (
-        <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
+        <ul
+          className="mt-3 flex gap-3 overflow-x-auto px-1 pt-2 pb-2 [scrollbar-width:thin]"
+          aria-label={`All photos of ${name}`}
+        >
           {items.map((item, i) => (
-            <button
-              key={item.id}
-              type="button"
-              aria-current={i === index ? "true" : undefined}
-              aria-label={`${name}, ${item.media_type} ${i + 1} of ${items.length}`}
-              onClick={() => setIndex(i)}
-              className={`relative h-20 w-16 shrink-0 overflow-hidden rounded-xl border-2 ${
-                i === index ? "border-toffee-deep" : "border-transparent"
-              }`}
-            >
-              {item.media_type === "image" ? (
-                <Image src={item.url} alt="" fill className="object-cover" sizes="64px" />
-              ) : (
-                <span className="flex h-full items-center justify-center bg-cocoa text-milk">▶</span>
-              )}
-            </button>
+            <li key={item.id} className="shrink-0">
+              <button
+                type="button"
+                aria-current={i === index ? "true" : undefined}
+                aria-label={`${name}, ${item.media_type} ${i + 1} of ${items.length}`}
+                onClick={() => setIndex(i)}
+                className={cn(
+                  "relative block h-24 w-20 overflow-hidden rounded-[0.9rem] border-[3px] transition-transform duration-300 md:h-28 md:w-24",
+                  i === index
+                    ? "-translate-y-1 -rotate-3 border-toffee-deep"
+                    : "border-cocoa/30 hover:-rotate-2 hover:border-cocoa",
+                )}
+              >
+                {item.media_type === "image" ? (
+                  <Image src={item.url} alt="" fill className="object-cover" sizes="96px" />
+                ) : (
+                  <span className="flex h-full items-center justify-center bg-cocoa text-milk">▶</span>
+                )}
+              </button>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   );

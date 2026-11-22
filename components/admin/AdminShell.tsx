@@ -46,15 +46,17 @@ export function AdminShell({
   }
 
   return (
-    <div className="admin-shell min-h-screen lg:grid lg:grid-cols-[240px_1fr]">
+    <div className="admin-shell min-h-screen lg:grid lg:grid-cols-[min(240px,28vw)_minmax(0,1fr)]">
       <aside className="border-b border-cocoa/10 bg-[#efe6da] lg:min-h-screen lg:border-b-0 lg:border-r">
-        <div className="px-5 py-6">
-          <Link href="/" className="font-plush text-xl font-extrabold text-cocoa">
-            TeddyPups Admin
-          </Link>
-          <p className="mt-1 text-sm text-cocoa-soft">{adminName}</p>
+        <div className="flex items-end justify-between gap-3 px-4 py-4 sm:px-5 sm:py-6">
+          <div className="min-w-0">
+            <Link href="/" className="font-plush text-lg font-extrabold text-cocoa sm:text-xl">
+              TeddyPups Admin
+            </Link>
+            <p className="mt-1 truncate text-sm text-cocoa-soft">{adminName}</p>
+          </div>
         </div>
-        <nav className="flex gap-1 overflow-x-auto px-3 pb-4 lg:flex-col">
+        <nav className="admin-nav flex gap-1 overflow-x-auto px-3 pb-3 [-ms-overflow-style:none] [scrollbar-width:none] lg:flex-col lg:pb-4 [&::-webkit-scrollbar]:hidden">
           {links.map((link) => {
             const active = pathname.startsWith(link.href);
             const Icon = link.icon;
@@ -63,11 +65,11 @@ export function AdminShell({
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold whitespace-nowrap",
+                  "flex shrink-0 items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold whitespace-nowrap",
                   active ? "bg-toffee-deep text-milk" : "text-cocoa hover:bg-white/60",
                 )}
               >
-                <Icon size={16} />
+                <Icon size={16} className="shrink-0" />
                 {link.label}
               </Link>
             );
@@ -75,14 +77,14 @@ export function AdminShell({
           <button
             type="button"
             onClick={signOut}
-            className="mt-2 flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-cocoa hover:bg-white/60 lg:mt-6"
+            className="mt-1 flex shrink-0 items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-cocoa hover:bg-white/60 lg:mt-6"
           >
-            <LogOut size={16} />
+            <LogOut size={16} className="shrink-0" />
             Sign out
           </button>
         </nav>
       </aside>
-      <div className="p-4 md:p-8">{children}</div>
+      <div className="min-w-0 overflow-x-hidden p-4 sm:p-6 md:p-8">{children}</div>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { Puppy } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
 import { puppyWhatsAppMessage } from "@/lib/whatsapp";
+import { puppyDisplayName } from "@/lib/utils/format";
 import { cn } from "@/lib/utils/cn";
 
 type Mode = "letter" | "puppy";
@@ -179,65 +180,59 @@ export function EnquiryForm({
     );
   }
 
+  const fieldClass =
+    "mt-1.5 h-12 w-full rounded-[1rem] border-2 border-cocoa/60 bg-milk px-4 text-base outline-none transition-[border-color,box-shadow] focus:border-cocoa focus:shadow-[0_0_0_4px_rgb(242_190_107/0.6)]";
+
   return (
-    <form onSubmit={onSubmit} className="dotted-card space-y-4 p-6 md:p-8">
-      <div>
-        <label className="font-scrawl text-sm text-cocoa-soft" htmlFor="name">
-          Your name *
-        </label>
-        <input
-          id="name"
-          name="name"
-          required
-          className="mt-1 w-full rounded-xl border border-cocoa/15 bg-white px-3 py-2 focus:border-toffee focus:outline-none"
-        />
+    <form onSubmit={onSubmit} className="space-y-5">
+      <div className="grid gap-5 sm:grid-cols-2">
+        <div>
+          <label className="block text-[0.95rem] font-semibold" htmlFor="name">
+            Your name<span className="text-toffee-ink"> *</span>
+          </label>
+          <input id="name" name="name" required autoComplete="name" className={fieldClass} />
+        </div>
+        <div>
+          <label className="block text-[0.95rem] font-semibold" htmlFor="phone">
+            Phone or WhatsApp<span className="text-toffee-ink"> *</span>
+          </label>
+          <input id="phone" name="phone" required className={fieldClass} />
+          <p className="mt-1 text-xs text-cocoa-soft">
+            With country code, e.g. +971 50 123 4567
+          </p>
+        </div>
+        <div>
+          <label className="block text-[0.95rem] font-semibold" htmlFor="email">
+            Email (optional)
+          </label>
+          <input id="email" name="email" type="email" autoComplete="email" className={fieldClass} />
+        </div>
+        <div>
+          <label className="block text-[0.95rem] font-semibold" htmlFor="area">
+            Your area (optional)
+          </label>
+          <input
+            id="area"
+            name="area"
+            placeholder="e.g. Dubai Marina"
+            className={fieldClass}
+          />
+        </div>
       </div>
       <div>
-        <label className="font-scrawl text-sm text-cocoa-soft" htmlFor="phone">
-          Phone or WhatsApp *
-        </label>
-        <input
-          id="phone"
-          name="phone"
-          required
-          className="mt-1 w-full rounded-xl border border-cocoa/15 bg-white px-3 py-2 focus:border-toffee focus:outline-none"
-        />
-        <p className="mt-1 text-xs text-cocoa-soft">With country code, e.g. +971 50 123 4567</p>
-      </div>
-      <div>
-        <label className="font-scrawl text-sm text-cocoa-soft" htmlFor="email">
-          Email (optional)
-        </label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          className="mt-1 w-full rounded-xl border border-cocoa/15 bg-white px-3 py-2 focus:border-toffee focus:outline-none"
-        />
-      </div>
-      <div>
-        <label className="font-scrawl text-sm text-cocoa-soft" htmlFor="area">
-          Your area (optional)
-        </label>
-        <input
-          id="area"
-          name="area"
-          placeholder="e.g. Dubai Marina"
-          className="mt-1 w-full rounded-xl border border-cocoa/15 bg-white px-3 py-2 focus:border-toffee focus:outline-none"
-        />
-      </div>
-      <div>
-        <label className="font-scrawl text-sm text-cocoa-soft" htmlFor="message">
+        <label className="block text-[0.95rem] font-semibold" htmlFor="message">
           Message (optional)
         </label>
         <textarea
           id="message"
           name="message"
-          rows={3}
+          rows={4}
           defaultValue={
-            puppy ? puppyWhatsAppMessage(puppy) : "Hi! I'd love to know more about your puppies."
+            puppy
+              ? `Hi! I'd love to know more about ${puppyDisplayName(puppy)}.`
+              : "Hi! I'd love to know more about your puppies."
           }
-          className="mt-1 w-full rounded-xl border border-cocoa/15 bg-white px-3 py-2 focus:border-toffee focus:outline-none"
+          className="mt-1.5 w-full rounded-2xl border-2 border-cocoa/60 bg-milk px-4 py-3 text-base outline-none transition-[border-color,box-shadow] focus:border-cocoa focus:shadow-[0_0_0_4px_rgb(242_190_107/0.6)]"
         />
       </div>
       <input

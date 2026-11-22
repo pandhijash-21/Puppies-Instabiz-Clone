@@ -52,19 +52,19 @@ export const puppyComesWith = [
 export const importedHomeSteps = [
   {
     title: "Reserve your puppy",
-    body: "Browse our selection of available breeds and place a reservation for the teacup puppy that captures your heart. Our reservation-only model ensures that each puppy is specifically sourced to meet your preferences.",
+    body: "Tell us which puppy has captured your heart.",
   },
   {
     title: "Personalized consultation",
-    body: "Once your reservation is confirmed, we will work closely with you to finalize details and provide updates on your puppy's journey.",
+    body: "We finalize details with you and share updates on your puppy's journey.",
   },
   {
     title: "Import and arrival",
-    body: "We manage all aspects of the import process, including health checks, travel arrangements, and necessary documentation. Your puppy will be carefully transported and will arrive ready to join your family.",
+    body: "We manage health checks, travel arrangements, and documentation.",
   },
   {
     title: "Welcome home",
-    body: "Upon arrival, we provide support to help your new puppy acclimate to their new environment. Our team is available for any additional assistance and to ensure a smooth transition into your home.",
+    body: "We help your new puppy settle in and ensure a smooth transition into your home.",
   },
 ];
 

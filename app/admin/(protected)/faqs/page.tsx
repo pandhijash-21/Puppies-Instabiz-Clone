@@ -7,8 +7,11 @@ export default async function AdminFaqsPage() {
 
   return (
     <div>
-      <h1 className="font-plush text-4xl font-extrabold">FAQs</h1>
-      <form action={upsertFaqAction} className="mt-8 space-y-3 rounded-2xl bg-white p-6 shadow-sm">
+      <h1 className="font-plush font-extrabold">FAQs</h1>
+      <form
+        action={upsertFaqAction}
+        className="mt-6 space-y-3 rounded-2xl bg-white p-4 shadow-sm sm:mt-8 sm:p-6"
+      >
         <h2 className="font-plush text-xl font-bold">Add FAQ</h2>
         <input
           name="question"

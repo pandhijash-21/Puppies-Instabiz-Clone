@@ -6,7 +6,10 @@ import { hasSupabaseEnv } from "@/lib/config";
 export function PuppyForm({ puppy }: { puppy?: Puppy }) {
   return (
     <div className="space-y-8">
-      <form action={upsertPuppyAction} className="space-y-4 rounded-2xl bg-white p-6 shadow-sm">
+      <form
+        action={upsertPuppyAction}
+        className="space-y-4 rounded-2xl bg-white p-4 shadow-sm sm:p-6"
+      >
         {puppy?.id && <input type="hidden" name="id" value={puppy.id} />}
         <div className="grid gap-4 md:grid-cols-2">
           <Field label="Name" name="name" defaultValue={puppy?.name} required />
@@ -121,10 +124,19 @@ export function PuppyForm({ puppy }: { puppy?: Puppy }) {
           </ul>
           <form action={uploadPuppyImageAction} className="mt-6 space-y-3" encType="multipart/form-data">
             <input type="hidden" name="puppy_id" value={puppy.id} />
-            <input type="file" name="file" required accept="image/*,video/mp4,video/webm" />
+            <input
+              type="file"
+              name="file"
+              required
+              accept="image/*,video/mp4,video/webm"
+              className="block w-full min-w-0 max-w-full"
+            />
             <label className="block text-sm font-semibold">
               Media type
-              <select name="media_type" className="mt-1 rounded-xl border border-cocoa/15 px-3 py-2">
+              <select
+                name="media_type"
+                className="mt-1 block w-full min-w-0 max-w-full rounded-xl border border-cocoa/15 px-3 py-2"
+              >
                 <option value="image">Image</option>
                 <option value="video">Video</option>
               </select>

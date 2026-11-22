@@ -202,15 +202,18 @@ export function HomeScrollBuddy() {
       const escortY = Math.min(vh * 0.78, vh - buddyH - 8);
 
       const applyPose = (pose: Pose) => {
+        const paws = document.querySelector(".tp-hero__paws") as HTMLElement | null;
         if (pose.heroPeek) {
           hero.style.opacity = String(pose.heroPeek.opacity);
           hero.style.transform = pose.heroPeek.y
             ? `translate(-50%, ${pose.heroPeek.y}px)`
             : "translateX(-50%)";
+          if (paws) paws.style.opacity = String(pose.heroPeek.opacity);
         } else {
           // Hide the quilt peek once the scroll buddy is on stage
           hero.style.opacity = "0";
           hero.style.transform = "translateX(-50%)";
+          if (paws) paws.style.opacity = "0";
         }
 
         const sm = smooth.current;
@@ -238,12 +241,18 @@ export function HomeScrollBuddy() {
         root.style.pointerEvents = sm.opacity > 0.25 ? "auto" : "none";
         root.style.transformOrigin = "50% 18%";
         root.style.transform = `translate3d(${sm.x}px, ${sm.y}px, 0) scale(${sm.scale})`;
-        // Grow from hero face → full dog (clip away legs/torso until reveal finishes)
-        const reveal = clamp(pose.bodyReveal ?? 1, 0, 1);
+        // Grow from hero face → full dog (clip away legs/torso until reveal finishes).
+        // On mobile keep head-only so the full walker never flashes while scrolling.
+        const mobileFaceOnly = window.innerWidth < 768;
+        const reveal = clamp(
+          mobileFaceOnly ? Math.min(pose.bodyReveal ?? 1, 0.14) : (pose.bodyReveal ?? 1),
+          0,
+          1,
+        );
         if (reveal >= 0.995) {
           root.style.clipPath = "";
         } else {
-          root.style.clipPath = `inset(0 0 ${(1 - reveal) * 56}% 0)`;
+          root.style.clipPath = `inset(0 0 ${(1 - reveal) * 58}% 0)`;
         }
         document.documentElement.dataset.scrollBuddy = pose.phase;
 
@@ -284,6 +293,8 @@ export function HomeScrollBuddy() {
         }
       };
 
+      const isMobile = vw < 768;
+
       const placeEscort = (opts: {
         fromX: number;
         toX: number;
@@ -295,6 +306,8 @@ export function HomeScrollBuddy() {
         fadeOut?: boolean;
         scale?: number;
         forceGait?: Pose["forceGait"];
+        /** Prefer head-only when settled on a dock (esp. mobile) */
+        faceOnlyWhenSeated?: boolean;
       }) => {
         const e = easeOut(clamp(opts.enter, 0, 1));
         const x = opts.fromX + (opts.toX - opts.fromX) * e;
@@ -308,14 +321,18 @@ export function HomeScrollBuddy() {
           ? baseOpacity * (1 - clamp((e - 0.72) / 0.28, 0, 1))
           : baseOpacity;
         const scale = opts.scale ?? 0.96 + e * 0.06;
+        const seated = canDock && e > 0.82 && Math.abs(opts.toX - x) < 22;
         applyPose({
           x,
           y: yPos,
           opacity,
-          scale,
+          scale: isMobile ? Math.min(scale, 0.88) : scale,
           faceLeft: opts.faceLeft ?? false,
           phase: opts.phase,
-          forceGait: opts.forceGait,
+          forceGait: opts.forceGait ?? (seated ? "sit" : isMobile ? "idle" : undefined),
+          // Mobile stays face-only; desktop shows the full walker
+          bodyReveal: isMobile ? 0.12 : 1,
+          quick: isMobile && !seated,
         });
       };
 
@@ -489,26 +506,20 @@ export function HomeScrollBuddy() {
 
       if (pathsApproaching && pathsRect) {
         const enter = clamp((vh * 0.95 - pathsRect.top) / Math.max(120, vh * 0.55), 0, 1);
-        const e = easeOut(enter);
-        const fromX = Math.min(meetX, vw * 0.22);
-        const x = fromX + (guideX - fromX) * e;
-
-        let yPos: number;
-        if (guideRect && guideRect.top <= escortY + buddyH * 0.2) {
-          yPos = guideY;
-        } else {
-          const drop = clamp(enter / 0.4, 0, 1);
-          const startY = Math.min(Math.max(meetY, vh * 0.5), vh * 0.78);
-          yPos = startY + (escortY - startY) * easeOut(drop);
-        }
-
-        applyPose({
-          x,
-          y: yPos,
-          opacity: Math.min(1, 0.35 + e * 0.75),
-          scale: 0.96 + e * 0.07,
-          faceLeft: enter < 0.6,
+        // Mobile: clear walk from meet's left corner → paths right dock (face only when seated)
+        const fromX = isMobile
+          ? Math.min(meetX, vw * 0.08)
+          : Math.min(meetX, vw * 0.22);
+        const toX = isMobile ? Math.max(guideX, vw * 0.58) : guideX;
+        placeEscort({
+          fromX,
+          toX,
+          toY: guideY,
+          dockRect: guideRect ?? null,
+          enter,
           phase: "paths",
+          faceLeft: enter < 0.55,
+          faceOnlyWhenSeated: true,
         });
         raf = requestAnimationFrame(tick);
         return;
@@ -702,7 +713,7 @@ export function HomeScrollBuddy() {
       ref={rootRef}
       className="tp-scroll-buddy pointer-events-none fixed left-0 top-0 z-[70]"
       style={{
-        width: "clamp(6.75rem, 18vw, 10.5rem)",
+        width: "clamp(7.75rem, 20vw, 12.25rem)",
         opacity: 0,
         willChange: "transform, opacity",
         transformOrigin: "50% 92%",

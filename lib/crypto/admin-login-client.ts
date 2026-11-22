@@ -12,6 +12,13 @@ function bufToB64(buf: ArrayBuffer | Uint8Array) {
   return btoa(binary);
 }
 
+/** Copy into a real ArrayBuffer view — satisfies TS BufferSource typing (no SharedArrayBuffer). */
+function toArrayBuffer(bytes: Uint8Array): ArrayBuffer {
+  const copy = new Uint8Array(bytes.byteLength);
+  copy.set(bytes);
+  return copy.buffer;
+}
+
 async function importPublicKey(pem: string) {
   const cleaned = pem
     .replace(/-----BEGIN PUBLIC KEY-----/, "")
@@ -20,7 +27,7 @@ async function importPublicKey(pem: string) {
   const raw = Uint8Array.from(atob(cleaned), (c) => c.charCodeAt(0));
   return crypto.subtle.importKey(
     "spki",
-    raw.buffer,
+    toArrayBuffer(raw),
     { name: "RSA-OAEP", hash: "SHA-256" },
     false,
     ["wrapKey"],
@@ -40,7 +47,7 @@ async function hybridSeal(
   const sealed = await crypto.subtle.encrypt(
     { name: "AES-GCM", iv },
     aesKey,
-    plaintext,
+    toArrayBuffer(plaintext),
   );
   const wrapped = await crypto.subtle.wrapKey("raw", aesKey, publicKey, {
     name: "RSA-OAEP",

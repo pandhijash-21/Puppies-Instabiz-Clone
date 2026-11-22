@@ -7,8 +7,11 @@ export default async function AdminReviewsPage() {
 
   return (
     <div>
-      <h1 className="font-plush text-4xl font-extrabold">Reviews</h1>
-      <form action={upsertReviewAction} className="mt-8 space-y-3 rounded-2xl bg-white p-6 shadow-sm">
+      <h1 className="font-plush font-extrabold">Reviews</h1>
+      <form
+        action={upsertReviewAction}
+        className="mt-6 space-y-3 rounded-2xl bg-white p-4 shadow-sm sm:mt-8 sm:p-6"
+      >
         <h2 className="font-plush text-xl font-bold">Add review</h2>
         <input
           name="author_name"

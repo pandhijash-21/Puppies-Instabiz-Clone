@@ -15,14 +15,16 @@ export default async function DashboardPage() {
 
   return (
     <div>
-      <h1 className="font-plush text-4xl font-extrabold">Dashboard</h1>
+      <h1 className="font-plush font-extrabold">Dashboard</h1>
       <p className="mt-2 text-cocoa-soft">Overview of TeddyPups content and leads.</p>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="mt-6 grid gap-3 sm:mt-8 sm:grid-cols-2 sm:gap-4 xl:grid-cols-3">
         {cards.map((card) => (
-          <div key={card.label} className="rounded-2xl bg-white p-5 shadow-sm">
+          <div key={card.label} className="rounded-2xl bg-white p-4 shadow-sm sm:p-5">
             <p className="text-sm text-cocoa-soft">{card.label}</p>
-            <p className="mt-2 font-plush text-4xl font-extrabold">{card.value}</p>
+            <p className="mt-2 font-plush text-[clamp(1.75rem,6vw,2.25rem)] font-extrabold">
+              {card.value}
+            </p>
           </div>
         ))}
       </div>
@@ -37,10 +39,10 @@ export default async function DashboardPage() {
             <li key={item.id}>
               <Link
                 href={item.href}
-                className="flex items-center justify-between rounded-xl bg-white px-4 py-3 shadow-sm hover:bg-honey-soft/40"
+                className="flex flex-col gap-1 rounded-xl bg-white px-4 py-3 shadow-sm hover:bg-honey-soft/40 sm:flex-row sm:items-center sm:justify-between sm:gap-3"
               >
-                <span>{item.label}</span>
-                <time className="text-sm text-cocoa-soft">
+                <span className="min-w-0 break-words">{item.label}</span>
+                <time className="shrink-0 text-sm text-cocoa-soft">
                   {new Date(item.at).toLocaleString()}
                 </time>
               </Link>

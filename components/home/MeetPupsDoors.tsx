@@ -26,15 +26,15 @@ type DoorPup = Pick<
 function doorWidthCss(i: number) {
   return (
     [
-      "clamp(7.25rem, min(11vw, 16vh), 11.5rem)",
-      "clamp(6.5rem, min(9.5vw, 14.5vh), 10.25rem)",
-      "clamp(8rem, min(12.5vw, 17.5vh), 12.5rem)",
-      "clamp(6.85rem, min(10vw, 15vh), 10.75rem)",
-      "clamp(7.75rem, min(11.5vw, 16.5vh), 12rem)",
-      "clamp(6.25rem, min(9vw, 14vh), 9.75rem)",
-      "clamp(8.15rem, min(12vw, 18vh), 12.75rem)",
-      "clamp(7rem, min(10.5vw, 15.5vh), 11.25rem)",
-    ][i % 8] ?? "10.5rem"
+      "clamp(8.25rem, min(14vw, 22vh), 15rem)",
+      "clamp(7.75rem, min(13vw, 20vh), 14rem)",
+      "clamp(8.75rem, min(15vw, 24vh), 16rem)",
+      "clamp(8rem, min(13.5vw, 21vh), 14.5rem)",
+      "clamp(8.5rem, min(14.5vw, 23vh), 15.5rem)",
+      "clamp(7.5rem, min(12.5vw, 19vh), 13.5rem)",
+      "clamp(8.9rem, min(15.5vw, 24vh), 16rem)",
+      "clamp(8.1rem, min(13.8vw, 21.5vh), 14.75rem)",
+    ][i % 8] ?? "clamp(8rem, min(15vw, 24vh), 16rem)"
   );
 }
 
@@ -149,14 +149,21 @@ export function MeetPupsDoors({ puppies }: { puppies: DoorPup[] }) {
       id="meet-pups"
       ref={pinRef}
       className="tp-scene tp-meet tp-meet--pinned"
-      style={{ height: pinHeight }}
+      style={
+        {
+          height: pinHeight,
+          ["--sky-top" as string]: "#fff1d8",
+          ["--sky-bottom" as string]: "#fbe3b4",
+        } as CSSProperties
+      }
       aria-label="Meet the pups"
+      data-tone="light"
       data-progress={progress.toFixed(3)}
     >
       <div className="tp-meet__stage">
         <div className="tp-meet__head">
           <div className="tp-meet__copy">
-            <h2 className="font-plush tp-meet__title">Meet the pups</h2>
+            <h2 className="font-plush text-huge tp-meet__title">Meet the pups</h2>
             <p className="tp-meet__sub">
               Real puppies, real photos, looking for their families right now.
             </p>
@@ -209,8 +216,8 @@ export function MeetPupsDoors({ puppies }: { puppies: DoorPup[] }) {
                             src={img.url}
                             alt=""
                             fill
-                            className="object-cover"
-                            sizes="(min-width: 1024px) 15rem, 44vw"
+                            className="tp-door__pup-photo object-cover"
+                            sizes="(min-width: 1024px) 16rem, 48vw"
                           />
                         )}
                       </span>
@@ -227,7 +234,7 @@ export function MeetPupsDoors({ puppies }: { puppies: DoorPup[] }) {
               );
             })}
 
-            <div className="tp-door tp-door--all" style={{ "--door-w": "11rem" } as CSSProperties}>
+            <div className="tp-door tp-door--all" style={{ "--door-w": "clamp(8rem, min(14vw, 22vh), 15rem)" } as CSSProperties}>
               <Link href="/puppies" className="tp-door__link tp-door__frame--all focus-ring">
                 <span className="font-plush tp-door__all">Meet them all</span>
               </Link>

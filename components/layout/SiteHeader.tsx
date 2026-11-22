@@ -46,7 +46,7 @@ export function SiteHeader() {
   return (
     <header className="site-header sticky top-0 z-50">
       <div className="site-header__bar">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 md:px-6 md:py-4">
+        <div className="mx-auto flex w-full max-w-[96rem] items-center justify-between gap-4 px-5 py-3 md:px-8 md:py-4 lg:px-10">
           <Link
             href="/"
             className="flex items-center gap-2.5 focus-ring rounded-full"
@@ -65,7 +65,7 @@ export function SiteHeader() {
             </span>
           </Link>
 
-          <nav className="hidden items-center gap-1 lg:flex" aria-label="Main">
+          <nav className="hidden items-center gap-3 lg:flex" aria-label="Main">
             {navLinks.map((link) => {
               const active =
                 link.href === "/"
@@ -76,7 +76,7 @@ export function SiteHeader() {
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    "tp-nav-link relative px-3 py-2 text-[16px] font-bold text-cocoa transition hover:text-toffee-deep",
+                    "tp-nav-link relative px-3.5 py-2 text-[16px] font-bold text-cocoa transition hover:text-toffee-deep",
                     active && "font-extrabold text-toffee-deep",
                   )}
                   aria-current={active ? "page" : undefined}
@@ -113,7 +113,10 @@ export function SiteHeader() {
         </div>
 
         {open && (
-          <div id="mobile-nav" className="border-t border-cocoa/10 bg-milk px-4 py-6 lg:hidden">
+          <div
+            id="mobile-nav"
+            className="max-h-[calc(100svh-5.5rem)] overflow-y-auto border-t border-cocoa/10 bg-milk px-4 py-6 lg:hidden"
+          >
             <nav aria-label="Mobile" className="space-y-1">
               {navLinks.map((link) => (
                 <Link

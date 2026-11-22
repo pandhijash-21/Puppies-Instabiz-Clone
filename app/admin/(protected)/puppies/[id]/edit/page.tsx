@@ -30,7 +30,7 @@ export default async function EditPuppyPage({
 
   return (
     <div>
-      <h1 className="font-plush text-4xl font-extrabold">Edit {puppy.name}</h1>
+      <h1 className="font-plush font-extrabold">Edit {puppy.name}</h1>
       <div className="mt-8">
         <PuppyForm puppy={puppy} />
       </div>

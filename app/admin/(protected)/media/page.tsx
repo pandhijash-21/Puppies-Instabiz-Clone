@@ -28,18 +28,26 @@ export default async function AdminMediaPage() {
 
   return (
     <div>
-      <h1 className="font-plush text-4xl font-extrabold">Media library</h1>
+      <h1 className="font-plush font-extrabold">Media library</h1>
       <p className="mt-2 text-cocoa-soft">
         Upload shared brand assets to the public <code>media</code> bucket.
       </p>
 
       <form
         action={uploadMediaAction}
-        className="mt-8 space-y-3 rounded-2xl bg-white p-6 shadow-sm"
+        className="mt-6 space-y-3 rounded-2xl bg-white p-4 shadow-sm sm:mt-8 sm:p-6"
         encType="multipart/form-data"
       >
-        <input type="file" name="file" required accept="image/*,video/mp4,video/webm" />
-        <Button type="submit">Upload</Button>
+        <input
+          type="file"
+          name="file"
+          required
+          accept="image/*,video/mp4,video/webm"
+          className="block w-full min-w-0 max-w-full"
+        />
+        <Button type="submit" className="w-full sm:w-auto">
+          Upload
+        </Button>
         {!hasSupabaseEnv() && (
           <p className="text-sm text-cocoa-soft">
             Connect Supabase env vars to enable uploads.
