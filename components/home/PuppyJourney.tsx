@@ -50,11 +50,23 @@ export function PuppyJourney({ puppies }: { puppies: JourneyPup[] }) {
     let alive = true;
     let lastActive = -1;
 
+    const isMobileLayout = () => window.matchMedia("(max-width: 1023px)").matches;
+
     const tick = () => {
       if (!alive) return;
       const vh = window.innerHeight;
       const sectionRect = section.getBoundingClientRect();
-      // On mobile the phone sticks under the header — aim just below it
+
+      // Mobile: journey steps first, then phone — always show the full final chat
+      if (isMobileLayout()) {
+        if (lastActive !== steps.length - 1) {
+          lastActive = steps.length - 1;
+          setActiveStep(steps.length - 1);
+        }
+        raf = requestAnimationFrame(tick);
+        return;
+      }
+
       const phone = section.querySelector(".tp-phone") as HTMLElement | null;
       const phoneRect = phone?.getBoundingClientRect();
       const phoneStuck =
@@ -63,14 +75,13 @@ export function PuppyJourney({ puppies }: { puppies: JourneyPup[] }) {
         ? Math.min(vh * 0.78, Math.max(vh * 0.42, phoneRect!.bottom + 20))
         : vh * 0.42;
 
-      // Classic scroll-spy: last step whose top has crossed the focus line
+      // Desktop scroll-spy: last step whose top has crossed the focus line
       let best = 0;
       steps.forEach((el, i) => {
         const r = el.getBoundingClientRect();
         if (r.top < focus) best = i;
       });
 
-      // Near the end of the section, always show step 3
       if (sectionRect.bottom < vh * 1.05) best = steps.length - 1;
 
       if (best !== lastActive) {

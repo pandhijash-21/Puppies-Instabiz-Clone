@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
 import { navLinks } from "@/content/static";
 import { siteConfig } from "@/lib/config";
 import { whatsappHref } from "@/lib/whatsapp";
@@ -33,6 +32,7 @@ function PawMark({ className }: { className?: string }) {
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const telHref = `tel:${siteConfig.phoneDisplay.replace(/\D/g, "")}`;
 
   useEffect(() => {
     document.body.classList.toggle("tp-nav-open", open);
@@ -95,50 +95,22 @@ export function SiteHeader() {
               href={whatsappHref()}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-whatsapp hidden text-[15.2px] font-bold sm:inline-flex"
+              className="btn btn-whatsapp tp-header-wa text-[15.2px] font-bold"
             >
               WhatsApp us
             </a>
             <button
               type="button"
-              className="rounded-full border border-cocoa/20 p-2 lg:hidden focus-ring"
+              className="tp-menu-trigger focus-ring"
               aria-expanded={open}
               aria-controls="mobile-nav"
-              onClick={() => setOpen((v) => !v)}
+              onClick={() => setOpen(true)}
             >
-              {open ? <X /> : <Menu />}
-              <span className="sr-only">Menu</span>
+              <PawMark className="tp-menu-trigger__paw" />
+              Menu
             </button>
           </div>
         </div>
-
-        {open && (
-          <div
-            id="mobile-nav"
-            className="max-h-[calc(100svh-5.5rem)] overflow-y-auto border-t border-cocoa/10 bg-milk px-4 py-6 lg:hidden"
-          >
-            <nav aria-label="Mobile" className="space-y-1">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setOpen(false)}
-                  className="font-plush block py-2 text-[clamp(2rem,8vw,2.8rem)] font-extrabold text-cocoa"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </nav>
-            <a
-              href={whatsappHref()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-whatsapp mt-6 w-full font-bold"
-            >
-              WhatsApp us
-            </a>
-          </div>
-        )}
       </div>
 
       <svg
@@ -156,6 +128,55 @@ export function SiteHeader() {
         </defs>
         <rect width="100%" height="14" fill="url(#tp-hem)" />
       </svg>
+
+      {open && (
+        <div id="mobile-nav" className="tp-mobile-menu" role="dialog" aria-modal="true" aria-label="Site menu">
+          <div className="tp-mobile-menu__top">
+            <p className="tp-mobile-menu__eyebrow font-scrawl">where to, friend?</p>
+            <button
+              type="button"
+              className="tp-mobile-menu__close focus-ring"
+              onClick={() => setOpen(false)}
+            >
+              Close
+            </button>
+          </div>
+
+          <nav aria-label="Mobile" className="tp-mobile-menu__nav">
+            {navLinks.map((link) => {
+              const active =
+                link.href === "/"
+                  ? pathname === "/"
+                  : pathname.startsWith(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className={cn("tp-mobile-menu__link font-plush", active && "is-active")}
+                  aria-current={active ? "page" : undefined}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+          </nav>
+
+          <div className="tp-mobile-menu__foot">
+            <a
+              href={whatsappHref()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-whatsapp tp-mobile-menu__wa"
+            >
+              WhatsApp us
+            </a>
+            <a href={telHref} className="tp-mobile-menu__phone">
+              {siteConfig.phoneDisplay}
+            </a>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

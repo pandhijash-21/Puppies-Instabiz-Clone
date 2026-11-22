@@ -1,3 +1,4 @@
+import { MobileContactDock } from "@/components/layout/MobileContactDock";
 import { PawCursor } from "@/components/layout/PawCursor";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
@@ -19,6 +20,7 @@ export default function PublicLayout({
         {children}
       </main>
       <SiteFooter />
+      <MobileContactDock />
       <SiteMascot />
       <PawCursor />
     </>

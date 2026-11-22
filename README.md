@@ -6,16 +6,13 @@ A production-oriented visual and functional clone of the live TeddyPups marketin
 
 ## Live site
 
-> **Add your Netlify URL here once deployed:**
-
 ```text
-LIVE_URL=
-# Example: https://teddypups-bluetec.netlify.app
+LIVE_URL=https://puppiesinstabizweb-clone.netlify.app/
 ```
 
 | Environment | URL |
 |-------------|-----|
-| **Production (Netlify)** | _← paste live link above / here_ |
+| **Production (Netlify)** | [https://puppiesinstabizweb-clone.netlify.app/](https://puppiesinstabizweb-clone.netlify.app/) |
 | **Local development** | [http://localhost:3000](http://localhost:3000) |
 | **Reference (original)** | [https://puppy.instabizweb.com](https://puppy.instabizweb.com/) |
 
@@ -422,13 +419,13 @@ Browser
 ### After go-live
 
 ```text
-LIVE_URL=https://YOUR-SITE.netlify.app
+LIVE_URL=https://puppiesinstabizweb-clone.netlify.app/
 ```
 
 Also set:
 
 ```env
-NEXT_PUBLIC_SITE_URL=https://YOUR-SITE.netlify.app
+NEXT_PUBLIC_SITE_URL=https://puppiesinstabizweb-clone.netlify.app
 ```
 
 ---

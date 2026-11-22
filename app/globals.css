@@ -69,6 +69,10 @@ body.tp-nav-open {
   overflow: hidden;
 }
 
+body.tp-nav-open .tp-mobile-dock {
+  display: none !important;
+}
+
 ::selection {
   background: color-mix(in oklab, var(--color-honey) 55%, white);
   color: var(--color-cocoa);
@@ -168,6 +172,59 @@ body.tp-nav-open {
 .btn-whatsapp:active {
   transform: translateY(2px);
   box-shadow: 0 3px 0 #0b1a12, 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
+/* Header WhatsApp — hide on phones (dock replaces it); show tablet+ */
+.tp-header-wa {
+  display: inline-flex !important;
+}
+
+@media (max-width: 767px) {
+  .tp-header-wa {
+    display: none !important;
+  }
+}
+
+/* Mobile sticky WhatsApp + Call dock — phones only */
+.tp-mobile-dock {
+  display: none !important;
+}
+
+@media (max-width: 767px) {
+  .tp-mobile-dock {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 80;
+    display: flex !important;
+    align-items: stretch;
+    gap: 0.55rem;
+    padding: 0.65rem 0.85rem calc(0.65rem + env(safe-area-inset-bottom, 0px));
+    background: var(--color-milk);
+    border-top: 2px solid color-mix(in oklab, var(--color-cocoa) 14%, transparent);
+    box-shadow: 0 -8px 28px rgba(42, 23, 14, 0.12);
+  }
+
+  .tp-mobile-dock__wa {
+    flex: 1 1 auto;
+    justify-content: center;
+    padding-block: 0.8rem;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  .tp-mobile-dock__call {
+    flex: 0 0 auto;
+    min-width: 5.5rem;
+    justify-content: center;
+    padding-block: 0.8rem;
+    background: var(--color-milk);
+    font-weight: 700;
+  }
+
+  body {
+    padding-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
+  }
 }
 
 .tp-nav-link {
@@ -510,10 +567,11 @@ html[data-pup] .pup-stop > .pup-buddy {
   max-width: 110rem;
   margin-inline: auto;
   display: grid;
+  /* Mobile: intro → all journey steps → phone with full chat */
   grid-template-areas:
     "intro"
-    "side"
-    "story";
+    "story"
+    "side";
 }
 
 .tp-chat__intro {
@@ -915,37 +973,33 @@ html[data-pup] .pup-stop > .pup-buddy {
   }
 
   .tp-chat__steps {
-    gap: clamp(2.5rem, 8vh, 4rem);
+    gap: clamp(1.75rem, 5vh, 2.75rem);
     margin-top: 1.25rem;
   }
 
   .tp-chat__step {
-    min-height: 22rem;
-    opacity: 0.45;
-    transition: opacity 0.45s;
-  }
-
-  .tp-chat__step:last-child {
-    min-height: 26rem;
-  }
-
-  .tp-chat__step:is([data-active], [data-done], [data-filled]) {
+    min-height: 0;
     opacity: 1;
   }
 
+  .tp-chat__step:last-child {
+    min-height: 0;
+  }
+
   .tp-chat__side {
-    position: sticky;
-    top: calc(var(--header-h, 4.5rem) + 0.5rem);
-    padding-bottom: 1rem;
-    z-index: 2;
+    position: relative;
+    top: auto;
+    padding-bottom: clamp(5rem, 18vw, 6.5rem);
+    z-index: 1;
   }
 
   .tp-phone {
     width: min(100%, 22rem);
+    rotate: 0deg;
   }
 
   .tp-phone__screen {
-    height: clamp(22rem, 48vh, 32rem);
+    height: clamp(22rem, 52vh, 34rem);
     min-height: 22rem;
   }
 
@@ -2713,18 +2767,34 @@ html[data-pup]:not([data-meet-walker="on"]) .tp-meet__teddy {
 
   .tp-letterform__greeting {
     color: var(--color-toffee-ink);
+    font-family: var(--font-scrawl);
+    font-style: normal;
+    font-weight: 500;
     font-size: clamp(1.4rem, 2.4vw, 1.75rem);
+    line-height: 1.6;
   }
 
   .tp-letterform__line {
     margin-top: 0.9rem;
+    font-family: var(--font-sans);
+    font-style: normal;
+    font-weight: 400;
     font-size: clamp(1.05rem, 1.5vw, 1.2rem);
     line-height: 2.55;
+  }
+
+  .tp-letterform__line input,
+  .tp-letterform__line select {
+    font-family: inherit;
+    font-style: normal;
   }
 
   .tp-letterform__note {
     width: 100%;
     color: var(--color-toffee-ink);
+    font-family: var(--font-scrawl);
+    font-style: normal;
+    font-weight: 500;
     resize: vertical;
     background: repeating-linear-gradient(
       transparent 0,
@@ -2765,6 +2835,9 @@ html[data-pup]:not([data-meet-walker="on"]) .tp-meet__teddy {
 
   .tp-letterform__sign p {
     color: var(--color-cocoa-soft);
+    font-family: var(--font-scrawl);
+    font-style: normal;
+    font-weight: 500;
     font-size: 1.1rem;
   }
 
@@ -3202,6 +3275,141 @@ html[data-pup]:not([data-meet-walker="on"]) .tp-meet__teddy {
   z-index: 2;
 }
 
+/* Mobile “Menu” pill — phones/tablets only (CSS beats Tailwind; .btn-style display fights `lg:hidden`) */
+.tp-menu-trigger {
+  display: none !important;
+}
+
+@media (max-width: 1023px) {
+  .tp-menu-trigger {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 0.45rem;
+    border: 2px solid var(--color-cocoa);
+    background: var(--color-milk);
+    color: var(--color-cocoa);
+    border-radius: 999px;
+    padding: 0.55rem 1rem 0.55rem 0.85rem;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .tp-menu-trigger__paw {
+    width: 1rem;
+    height: 0.9rem;
+    flex: 0 0 auto;
+  }
+}
+
+/* Full-screen mobile nav sheet — never on desktop */
+.tp-mobile-menu {
+  display: none !important;
+}
+
+@media (max-width: 1023px) {
+.tp-mobile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex !important;
+  flex-direction: column;
+  background: #f2be6b;
+  color: var(--color-cocoa);
+  padding:
+    calc(1.1rem + env(safe-area-inset-top, 0px))
+    1.35rem
+    calc(1.35rem + env(safe-area-inset-bottom, 0px));
+}
+}
+
+.tp-mobile-menu__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex: 0 0 auto;
+}
+
+.tp-mobile-menu__eyebrow {
+  margin: 0;
+  font-family: var(--font-scrawl);
+  font-size: clamp(1.4rem, 2.4vw, 1.75rem);
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--color-toffee-ink);
+}
+
+.tp-mobile-menu__close {
+  border: 0;
+  border-radius: 999px;
+  background: #24130b;
+  color: var(--color-milk);
+  font-size: 1.05rem;
+  font-weight: 700;
+  padding: 0.7rem 1.35rem;
+  line-height: 1;
+}
+
+.tp-mobile-menu__nav {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.05rem;
+  padding-block: 1.25rem 0.75rem;
+  overflow-y: auto;
+}
+
+.tp-mobile-menu__link {
+  display: block;
+  font-family: var(--font-plush);
+  font-size: clamp(2.85rem, 13.5vw, 3.85rem);
+  font-weight: 800;
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
+  color: #24130b;
+  text-decoration: none;
+}
+
+.tp-mobile-menu__link.is-active {
+  color: #a24a1a;
+}
+
+.tp-mobile-menu__foot {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.75rem;
+  padding-top: 0.35rem;
+  flex: 0 0 auto;
+}
+
+.tp-mobile-menu__wa {
+  width: 100%;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 800;
+  padding: 1.05rem 1.5rem;
+  border-radius: 999px;
+  box-shadow: 0 7px 0 #0b1a12, 0 12px 22px rgba(0, 0, 0, 0.28) !important;
+}
+
+.tp-mobile-menu__phone {
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: #24130b;
+  text-decoration: none;
+}
+
+.tp-mobile-menu__phone:hover {
+  color: var(--color-toffee-ink);
+}
+
 .site-header__hem {
   display: block;
   position: absolute;
@@ -3532,12 +3740,9 @@ html.faq-room {
     min-height: 18rem;
   }
 
-  .tp-chat__step {
-    min-height: 16rem;
-  }
-
+  .tp-chat__step,
   .tp-chat__step:last-child {
-    min-height: 18rem;
+    min-height: 0;
   }
 
   .tp-meet__title.text-huge {
@@ -3631,10 +3836,6 @@ html.faq-room {
 
   .site-header__bar .font-plush {
     font-size: 1.15rem;
-  }
-
-  #mobile-nav a {
-    font-size: clamp(1.55rem, 8vw, 2.1rem);
   }
 
   .tp-quilt__edge {
