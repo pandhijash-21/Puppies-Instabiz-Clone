@@ -36,9 +36,10 @@ export function EnquiryForm({
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const formEl = e.currentTarget;
     setStatus("loading");
     setError("");
-    const form = new FormData(e.currentTarget);
+    const form = new FormData(formEl);
     const payload = {
       name: String(form.get("name") || ""),
       phone: String(form.get("phone") || ""),
@@ -56,10 +57,11 @@ export function EnquiryForm({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      const json = await res.json();
+      const json = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(json.error || "Something went wrong");
+      // Capture form before await — e.currentTarget is null after async
+      if (formEl.isConnected) formEl.reset();
       setStatus("success");
-      e.currentTarget.reset();
     } catch (err) {
       setStatus("error");
       setError(err instanceof Error ? err.message : "Failed to send");
