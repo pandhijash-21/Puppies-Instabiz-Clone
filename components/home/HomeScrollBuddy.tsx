@@ -242,13 +242,8 @@ export function HomeScrollBuddy() {
         root.style.transformOrigin = "50% 18%";
         root.style.transform = `translate3d(${sm.x}px, ${sm.y}px, 0) scale(${sm.scale})`;
         // Grow from hero face → full dog (clip away legs/torso until reveal finishes).
-        // On mobile keep head-only so the full walker never flashes while scrolling.
-        const mobileFaceOnly = window.innerWidth < 768;
-        const reveal = clamp(
-          mobileFaceOnly ? Math.min(pose.bodyReveal ?? 1, 0.14) : (pose.bodyReveal ?? 1),
-          0,
-          1,
-        );
+        // Mobile walks full-body too so he overlaps content instead of a clipped head.
+        const reveal = clamp(pose.bodyReveal ?? 1, 0, 1);
         if (reveal >= 0.995) {
           root.style.clipPath = "";
         } else {
@@ -326,12 +321,12 @@ export function HomeScrollBuddy() {
           x,
           y: yPos,
           opacity,
-          scale: isMobile ? Math.min(scale, 0.88) : scale,
+          scale: isMobile ? Math.min(scale, 0.92) : scale,
           faceLeft: opts.faceLeft ?? false,
           phase: opts.phase,
-          forceGait: opts.forceGait ?? (seated ? "sit" : isMobile ? "idle" : undefined),
-          // Mobile stays face-only; desktop shows the full walker
-          bodyReveal: isMobile ? 0.12 : 1,
+          forceGait: opts.forceGait ?? (seated ? "sit" : undefined),
+          bodyReveal:
+            opts.faceOnlyWhenSeated && seated ? (isMobile ? 0.55 : 0.7) : 1,
           quick: isMobile && !seated,
         });
       };

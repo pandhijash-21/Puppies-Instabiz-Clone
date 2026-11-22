@@ -3518,8 +3518,8 @@ html.faq-room {
   }
 
   .tp-scroll-buddy {
-    /* Keep mobile escort small + head-only (clip handled in JS) */
-    width: clamp(4.5rem, 16vw, 5.75rem) !important;
+    /* Compact full-body walker on mobile — overlaps content, no head-only clip */
+    width: clamp(5.75rem, 22vw, 7.25rem) !important;
   }
 
   .tp-phone {

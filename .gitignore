@@ -40,6 +40,9 @@ yarn-error.log*
 /Untitled
 /Untitled.*
 
+# internal interview notes (not for publish)
+/docs/INTERVIEW.md
+
 # vercel
 .vercel
 

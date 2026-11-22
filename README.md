@@ -461,7 +461,6 @@ NEXT_PUBLIC_SITE_URL=https://YOUR-SITE.netlify.app
 
 ## Related docs
 
-- [`docs/INTERVIEW.md`](docs/INTERVIEW.md) — short demo script and decision talking points
 - [`.env.example`](.env.example) — full environment template
 - [`supabase/migrations/20260320120000_init.sql`](supabase/migrations/20260320120000_init.sql) — schema source of truth
 
